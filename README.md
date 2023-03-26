@@ -20,13 +20,13 @@
 **Запус проекта:**
 - Создать БД todo
 
-'''
+```
 create database cinema
-'''
+```
 
 - Создать таблицу tasks
 
-'''
+```
 CREATE TABLE tasks (
 id SERIAL PRIMARY KEY,
 name TEXT,
@@ -34,39 +34,29 @@ description TEXT,
 created TIMESTAMP,
 done BOOLEAN
 );
-'''
+```
 
 - Запустить проект через класс Main, либо с помощью команд: 
-'''
+```
 javac Main.java
-'''
+```
 
 затем
 
-'''
+```
 java Main
-'''
+```
 
 **Страницы:**
 - Список задач
-![img.png](img.png)
-
-
+![img.png](files/img.png)
 - Выполнененные
-![img_1.png](img_1.png)
-
-
+![img_1.png](files/img_1.png)
 - Новые (отображаются задачи, добавленные за последнюю неделю)
-![img_2.png](img_2.png)
-
-
+![img_2.png](files/img_2.png)
 - Детальная информация по задаче
-![img_3.png](img_3.png)
-
-
+![img_3.png](files/img_3.png)
 - Редактирование задачи
-![img_4.png](img_4.png)
-
-
+![img_4.png](files/img_4.png)
 - Добавление задачи
-![img_5.png](img_5.png)
+![img_5.png](files/img_5.png)
