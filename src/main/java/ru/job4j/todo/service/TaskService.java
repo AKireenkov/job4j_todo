@@ -16,4 +16,8 @@ public interface TaskService {
     Optional<Task> findById(int id);
 
     Collection<Task> findAll();
+
+    Collection<Task> getDoneList();
+
+    boolean completeTask(Task task);
 }

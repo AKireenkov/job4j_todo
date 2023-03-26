@@ -2,7 +2,8 @@ package ru.job4j.todo.model;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tasks")
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -19,17 +19,14 @@ public class TaskController {
 
     @GetMapping
     public String getAllTasks(Model model) {
-        if (model.getAttribute("tasks") == null) {
-            model.addAttribute("tasks", taskService.findAll());
-        }
-        return "list";
+        model.addAttribute("tasks", taskService.findAll());
+        return "task/list";
     }
 
     @GetMapping("/done")
     public String getDoneTasks(Model model) {
-        List<Task> doneList = taskService.findAll().stream().filter(Task::isDone).toList();
-        model.addAttribute("tasks", doneList);
-        return "list";
+        model.addAttribute("tasks", taskService.getDoneList());
+        return "task/list";
     }
 
     @GetMapping("/new")
@@ -39,14 +36,18 @@ public class TaskController {
                 .filter(t -> t.getCreated().isAfter(LocalDateTime.now().minusDays(WEEK)))
                 .toList();
         model.addAttribute("tasks", doneList);
-        return "list";
+        return "task/list";
     }
 
     @GetMapping("/{id}")
     public String getById(Model model, @PathVariable int id) {
-        var task = taskService.findById(id).get();
-        model.addAttribute("task", task);
-        return "one";
+        var task = taskService.findById(id);
+        if (task.isEmpty()) {
+            model.addAttribute("message", "Не удалось найти задание");
+            return "404";
+        }
+        model.addAttribute("task", task.get());
+        return "task/one";
     }
 
     @GetMapping("/delete/{id}")
@@ -54,17 +55,22 @@ public class TaskController {
         var isDeleted = taskService.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Не удалось удалить задание");
+            return "404";
         }
         return "redirect:/tasks";
     }
 
-    @GetMapping("/complete/{id}")
+    @PostMapping("/complete/{id}")
     public String completeTask(Model model, @PathVariable int id) {
-        var task = taskService.findById(id).get();
-        task.setDone(true);
-        var isUpdated = taskService.update(task);
+        var task = taskService.findById(id);
+        if (task.isEmpty()) {
+            model.addAttribute("message", "Не удалось найти задание");
+            return "errors/404";
+        }
+        var isUpdated = taskService.completeTask(task.get());
         if (!isUpdated) {
             model.addAttribute("message", "Не удалось выполнить задание");
+            return "errors/404";
         }
         return "redirect:/tasks";
     }
@@ -72,8 +78,12 @@ public class TaskController {
     @GetMapping("edit/{id}")
     public String editTask(Model model, @PathVariable int id) {
         var task = taskService.findById(id);
+        if (task.isEmpty()) {
+            model.addAttribute("message", "Не удалось найти задание");
+            return "errors/404";
+        }
         model.addAttribute("task", task.get());
-        return "edit";
+        return "task/edit";
     }
 
     @PostMapping("/update")
@@ -81,13 +91,14 @@ public class TaskController {
         var isUpdated = taskService.update(task);
         if (!isUpdated) {
             model.addAttribute("message", "Не удалось обновить задачу");
+            return "errors/404";
         }
         return "redirect:/tasks";
     }
 
     @GetMapping("/create")
     public String getCreationPage() {
-        return "create";
+        return "task/create";
     }
 
     @PostMapping("/create")
