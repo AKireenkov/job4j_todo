@@ -123,10 +123,11 @@ public class HbnTaskRepository implements TaskRepository {
         boolean isUpdate = false;
         try {
             session.beginTransaction();
-            task.setDone(true);
-            session.update(task);
+            int updateRows = session.createQuery("UPDATE Task SET done=true WHERE id=:taskId")
+                    .setParameter("taskId", task.getId())
+                    .executeUpdate();
             session.getTransaction().commit();
-            isUpdate = true;
+            isUpdate = updateRows > 0;
         } catch (Exception ex) {
             session.getTransaction().rollback();
         } finally {
