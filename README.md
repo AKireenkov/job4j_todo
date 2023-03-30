@@ -60,3 +60,7 @@ java Main
 ![img_4.png](files/img_4.png)
 - Добавление задачи
 ![img_5.png](files/img_5.png)
+- Вход
+![img.png](files/img_6.png)
+- Регистрация
+![img_1.png](files/img_7.png)
