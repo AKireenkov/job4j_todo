@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Task;
-import ru.job4j.todo.service.TaskService;
+import ru.job4j.todo.service.SimpleTaskService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequestMapping("/tasks")
 public class TaskController {
     private static final int WEEK = 7;
-    private final TaskService taskService;
+    private final SimpleTaskService taskService;
 
     @GetMapping
     public String getAllTasks(Model model) {
@@ -52,8 +52,8 @@ public class TaskController {
 
     @GetMapping("/delete/{id}")
     public String deleteTask(Model model, @PathVariable int id) {
-        var isDeleted = taskService.deleteById(id);
-        if (!isDeleted) {
+        taskService.deleteById(id);
+        if (taskService.findById(id).isPresent()) {
             model.addAttribute("message", "Не удалось удалить задание");
             return "404";
         }
@@ -67,8 +67,8 @@ public class TaskController {
             model.addAttribute("message", "Не удалось найти задание");
             return "errors/404";
         }
-        var isUpdated = taskService.completeTask(task.get());
-        if (!isUpdated) {
+        taskService.completeTask(task.get());
+        if (task.get().isDone()) {
             model.addAttribute("message", "Не удалось выполнить задание");
             return "errors/404";
         }
@@ -88,11 +88,7 @@ public class TaskController {
 
     @PostMapping("/update")
     public String update(Model model, @ModelAttribute Task task) {
-        var isUpdated = taskService.update(task);
-        if (!isUpdated) {
-            model.addAttribute("message", "Не удалось обновить задачу");
-            return "errors/404";
-        }
+        taskService.update(task);
         return "redirect:/tasks";
     }
 
