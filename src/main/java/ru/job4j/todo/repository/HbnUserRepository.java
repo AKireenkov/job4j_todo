@@ -13,9 +13,11 @@ import java.util.Optional;
 public class HbnUserRepository {
     private final CrudRepository crudRepository;
 
-    public User save(User user) {
-        crudRepository.run(session -> session.persist(user));
-        return user;
+    public Optional<User> save(User user) {
+        return crudRepository.optional("insert into users (name, login, password) VALUES (:name, :login, :password)",
+                User.class, Map.of("name", user.getName(),
+                        "login", user.getLogin(),
+                        "password", user.getPassword()));
     }
 
     public Optional<User> findByLoginAndPassword(String login, String password) {

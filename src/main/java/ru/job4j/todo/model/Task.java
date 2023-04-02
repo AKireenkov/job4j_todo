@@ -35,11 +35,13 @@ public class Task {
             return false;
         }
         Task task = (Task) o;
-        return id == task.id && done == task.done && Objects.equals(name, task.name) && Objects.equals(description, task.description);
+        return id == task.id
+                && Objects.equals(name, task.name)
+                && Objects.equals(description, task.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, done);
+        return Objects.hash(id, name, description);
     }
 }
