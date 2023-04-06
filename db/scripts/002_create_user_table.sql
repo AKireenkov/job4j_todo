@@ -1,6 +1,6 @@
-CREATE TABLE users (
+create TABLE users (
    id SERIAL PRIMARY KEY,
    name TEXT,
-   login TEXT,
+   login unique TEXT,
    password TEXT
 );

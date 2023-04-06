@@ -14,10 +14,12 @@ public class HbnUserRepository {
     private final CrudRepository crudRepository;
 
     public Optional<User> save(User user) {
-        return crudRepository.optional("insert into users (name, login, password) VALUES (:name, :login, :password)",
-                User.class, Map.of("name", user.getName(),
-                        "login", user.getLogin(),
-                        "password", user.getPassword()));
+        try {
+            crudRepository.run(session -> session.persist(user));
+        } catch (Exception ex) {
+            return Optional.empty();
+        }
+        return Optional.of(user);
     }
 
     public Optional<User> findByLoginAndPassword(String login, String password) {
