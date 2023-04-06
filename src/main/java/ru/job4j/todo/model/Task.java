@@ -22,8 +22,15 @@ public class Task {
     private String description;
     private LocalDateTime created;
     private boolean done;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Task() {
+    }
+
+    public String getUser() {
+        return user.getName();
     }
 
     @Override
