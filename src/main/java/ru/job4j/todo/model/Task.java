@@ -29,10 +29,6 @@ public class Task {
     public Task() {
     }
 
-    public String getUser() {
-        return user.getName();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
