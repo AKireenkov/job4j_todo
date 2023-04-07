@@ -14,12 +14,14 @@ public class HbnUserRepository {
     private final CrudRepository crudRepository;
 
     public Optional<User> save(User user) {
+        Optional<User> optionalUser = Optional.empty();
         try {
             crudRepository.run(session -> session.persist(user));
+            optionalUser = Optional.of(user);
         } catch (Exception ex) {
-            return Optional.empty();
+            ex.printStackTrace();
         }
-        return Optional.of(user);
+        return optionalUser;
     }
 
     public Optional<User> findByLoginAndPassword(String login, String password) {
