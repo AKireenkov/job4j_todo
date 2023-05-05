@@ -35,7 +35,7 @@ public class HbnTaskRepository {
     }
 
     public Collection<Task> findAll() {
-        return crudRepository.query("from Task", Task.class);
+        return crudRepository.query("FROM Task f JOIN FETCH f.priority", Task.class);
     }
 
     public Collection<Task> getDoneList() {
