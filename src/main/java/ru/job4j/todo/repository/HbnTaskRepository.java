@@ -30,7 +30,7 @@ public class HbnTaskRepository {
     }
 
     public Optional<Task> findById(int id) {
-        return crudRepository.optional("from Task where id=:fId", Task.class,
+        return crudRepository.optional("from Task t JOIN FETCH t.categories where id=:fId", Task.class,
                 Map.of("fId", id));
     }
 

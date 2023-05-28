@@ -47,6 +47,7 @@ public class TaskController {
             return "404";
         }
         model.addAttribute("task", task.get());
+      //  model.addAttribute("category", ta)
         return "task/one";
     }
 
