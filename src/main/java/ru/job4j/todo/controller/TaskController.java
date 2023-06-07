@@ -4,12 +4,16 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.SimpleTaskService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @AllArgsConstructor
@@ -50,7 +54,7 @@ public class TaskController {
             return "404";
         }
         model.addAttribute("task", task.get());
-      //  model.addAttribute("category", ta)
+        //  model.addAttribute("category", ta)
         return "task/one";
     }
 
@@ -98,13 +102,17 @@ public class TaskController {
 
     @GetMapping("/create")
     public String getCreationPage(Model model) {
-        model.addAttribute("ctgr",categoryService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
         return "task/create";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute Task task) {
+    public String create(@ModelAttribute Task task,
+                         @RequestParam(value = "category.id") List<Integer> categoriesId) {
         task.setCreated(LocalDateTime.now());
+        Set<Category> categories = new HashSet<>();
+        categoriesId.forEach(c -> categories.add(categoryService.findById(c).get()));
+        task.setCategories(categories);
         taskService.save(task);
         return "redirect:/tasks";
     }

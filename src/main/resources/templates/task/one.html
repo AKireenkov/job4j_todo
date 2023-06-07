@@ -58,13 +58,10 @@
                         <span th:if="${!task.done}">
                         <p>Не выполнено</p>
                         </span>
-                        <select class="form-control" id="category" name="category" multiple>
-                            <option value="">Select category for disable</option>
-                            <option th:each="category : ${categories}"
-                                    th:value="${category.name}"
-                                    th:text="${category.name}">
-                            </option>
-                        </select>
+                            <tr th:each="category : ${categories}">
+                                <td  th:value="${category.name}" />
+                            </tr>
+
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label"><b>Описание</b></label>

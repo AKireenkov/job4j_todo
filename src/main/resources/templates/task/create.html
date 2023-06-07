@@ -47,10 +47,10 @@
                         <input type="text" class="form-control" id="name" name="name"
                                 placeholder="Название задания">
                     </div>
-                    <select class="form-control" id="category" name="category" multiple>
-                        <option value="">Select category for disable</option>
-                        <option th:each="category : ${ctgr}"
-                                th:value="${category.name}"
+                    <select class="form-control" id="category" name="category.id" multiple>
+                        <option value="">Select categories</option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}"
                                 th:text="${category.name}">
                         </option>
                     </select>
