@@ -10,7 +10,6 @@ import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.SimpleTaskService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -54,7 +53,6 @@ public class TaskController {
             return "404";
         }
         model.addAttribute("task", task.get());
-        //  model.addAttribute("category", ta)
         return "task/one";
     }
 
@@ -110,8 +108,7 @@ public class TaskController {
     public String create(@ModelAttribute Task task,
                          @RequestParam(value = "category.id") List<Integer> categoriesId) {
         task.setCreated(LocalDateTime.now());
-        Set<Category> categories = new HashSet<>();
-        categoriesId.forEach(c -> categories.add(categoryService.findById(c).get()));
+        Set<Category> categories = new HashSet<>(categoryService.findAllById(categoriesId));
         task.setCategories(categories);
         taskService.save(task);
         return "redirect:/tasks";
