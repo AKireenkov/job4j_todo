@@ -16,12 +16,12 @@ public class CategoryRepository {
     private final CrudRepository crudRepository;
 
     public Optional<Category> findById(int id) {
-        return crudRepository.optional("from Category where id=:fId", Category.class,
+        return crudRepository.optional("FROM Category WHERE id=:fId", Category.class,
                 Map.of("fId", id));
     }
 
     public Collection<Category> findAllById(List<Integer> id) {
-        return crudRepository.query("from Category where id in :fId", Category.class,
+        return crudRepository.query("FROM Category WHERE id IN :fId", Category.class,
                 Map.of("fId", id)).stream().toList();
     }
 
