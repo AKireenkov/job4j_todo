@@ -6,10 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.CategoryService;
 import ru.job4j.todo.service.SimpleTaskService;
+import ru.job4j.todo.service.SimpleUserService;
 
-import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,11 +23,14 @@ import java.util.Set;
 public class TaskController {
     private static final int WEEK = 7;
     private final SimpleTaskService taskService;
-
     private final CategoryService categoryService;
+    private final SimpleUserService userService;
 
     @GetMapping
-    public String getAllTasks(Model model) {
+    public String getAllTasks(Model model, HttpServletRequest session) {
+        User user = (User) session.getSession().getAttribute("user");
+        var zone = user.getUserTimeZone().getZone();
+        taskService.findAll().forEach(m -> m.getCreated().withZoneSameInstant(zone));
         model.addAttribute("tasks", taskService.findAll());
         return "task/list";
     }
@@ -39,7 +45,8 @@ public class TaskController {
     public String getNewTasks(Model model) {
         List<Task> doneList = taskService.findAll()
                 .stream()
-                .filter(t -> t.getCreated().isAfter(LocalDateTime.now().minusDays(WEEK)))
+                .filter(t -> t.getCreated()
+                        .isAfter(ZonedDateTime.now().minusDays(WEEK)))
                 .toList();
         model.addAttribute("tasks", doneList);
         return "task/list";
@@ -107,7 +114,7 @@ public class TaskController {
     @PostMapping("/create")
     public String create(@ModelAttribute Task task,
                          @RequestParam(value = "category.id") List<Integer> categoriesId) {
-        task.setCreated(LocalDateTime.now());
+        task.setCreated(ZonedDateTime.now());
         Set<Category> categories = new HashSet<>(categoryService.findAllById(categoriesId));
         task.setCategories(categories);
         taskService.save(task);

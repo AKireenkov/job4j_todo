@@ -3,15 +3,13 @@ package ru.job4j.todo.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.service.SimpleUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.ZoneId;
 
 @AllArgsConstructor
 @Controller
@@ -37,13 +35,15 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage() {
+    public String getRegistrationPage(Model model) {
+        model.addAttribute("timeZones", userService.timeZones());
         return "users/registration";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user, Model model) {
-        userService.save(user);
+    public String register(@ModelAttribute User user, Model model,
+                           @RequestParam(value = "zone.getID()") String zoneId) {
+        userService.save(user, ZoneId.of(zoneId));
         var savedUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (savedUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким логином уже существует");

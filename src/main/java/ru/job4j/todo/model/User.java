@@ -2,13 +2,17 @@ package ru.job4j.todo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -19,6 +23,6 @@ public class User {
     private String login;
     private String password;
 
-    public User() {
-    }
+    @Column(name = "user_zone")
+    private ZonedDateTime userTimeZone;
 }

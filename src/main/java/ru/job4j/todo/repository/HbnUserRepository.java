@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.job4j.todo.model.User;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 @AllArgsConstructor
@@ -15,13 +13,23 @@ public class HbnUserRepository {
 
     public Optional<User> save(User user) {
         Optional<User> optionalUser = Optional.empty();
+        var zoneId = user.getUserTimeZone().getZone();
         try {
-            crudRepository.run(session -> session.persist(user));
+            crudRepository.run(session -> session
+                    .persist(user));
             optionalUser = Optional.of(user);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return optionalUser;
+    }
+
+    public List<TimeZone> timeZones() {
+        var zones = new ArrayList<TimeZone>();
+        for (String timeId : TimeZone.getAvailableIDs()) {
+            zones.add(TimeZone.getTimeZone(timeId));
+        }
+        return zones;
     }
 
     public Optional<User> findByLoginAndPassword(String login, String password) {

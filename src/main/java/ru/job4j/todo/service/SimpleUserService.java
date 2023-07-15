@@ -1,22 +1,34 @@
 package ru.job4j.todo.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.HbnUserRepository;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class SimpleUserService {
     private HbnUserRepository userStore;
 
-    public void save(User user) {
+    public void save(User user, ZoneId zone) {
+        user.setUserTimeZone(ZonedDateTime.now(zone));
+        log.debug(user.getUserTimeZone().toString());
         userStore.save(user);
     }
 
     public Optional<User> findByLoginAndPassword(String login, String password) {
         return userStore.findByLoginAndPassword(login, password);
+    }
+
+    public List<TimeZone> timeZones() {
+        return userStore.timeZones();
     }
 }
