@@ -9,7 +9,6 @@ import ru.job4j.todo.service.SimpleUserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.time.ZoneId;
 
 @AllArgsConstructor
 @Controller
@@ -42,8 +41,8 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model,
-                           @RequestParam(value = "zone.getID()") String zoneId) {
-        userService.save(user, ZoneId.of(zoneId));
+                           @RequestParam(value = "zone.getID()") String userTimeZone) {
+        userService.save(user, userTimeZone);
         var savedUser = userService.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (savedUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким логином уже существует");

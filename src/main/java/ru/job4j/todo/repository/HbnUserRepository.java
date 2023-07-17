@@ -13,7 +13,6 @@ public class HbnUserRepository {
 
     public Optional<User> save(User user) {
         Optional<User> optionalUser = Optional.empty();
-        var zoneId = user.getUserTimeZone().getZone();
         try {
             crudRepository.run(session -> session
                     .persist(user));

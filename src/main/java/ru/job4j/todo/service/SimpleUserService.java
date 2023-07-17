@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.repository.HbnUserRepository;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -18,9 +16,8 @@ import java.util.TimeZone;
 public class SimpleUserService {
     private HbnUserRepository userStore;
 
-    public void save(User user, ZoneId zone) {
-        user.setUserTimeZone(ZonedDateTime.now(zone));
-        log.debug(user.getUserTimeZone().toString());
+    public void save(User user, String userTimeZone) {
+        user.setUserTimeZone(userTimeZone);
         userStore.save(user);
     }
 

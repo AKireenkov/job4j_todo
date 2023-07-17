@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class Task {
     private int id;
     private String name;
     private String description;
-    private ZonedDateTime created;
+    private LocalDateTime created;
     private boolean done;
     @ManyToOne
     @JoinColumn(name = "user_id")

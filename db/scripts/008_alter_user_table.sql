@@ -1,2 +1,2 @@
 ALTER TABLE users
-ADD user_zone TIMESTAMP WITHOUT TIME ZONE DEFAULT now();
+ADD user_zone text;

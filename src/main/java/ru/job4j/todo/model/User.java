@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @Setter
 @Getter
@@ -24,5 +22,5 @@ public class User {
     private String password;
 
     @Column(name = "user_zone")
-    private ZonedDateTime userTimeZone;
+    private String userTimeZone;
 }
